@@ -49,6 +49,7 @@ class StationMap:
         self.cumulative_pm25 = 0
         self.average_pm25 = 0
         self.crdnts = crdnt_str
+        self.samples_taken = 0
 
     def update_stations(self, parser):
         data = parser.get_stations(self.crdnts)
@@ -57,8 +58,10 @@ class StationMap:
             self.stations[item['uid']] = item['aqi']
             if item['aqi'].isnumeric():
                 self.cumulative_pm25 += int(item['aqi'])
+                self.samples_taken += 1
             print(f"{current_time} Station: {item['station']['name']} pm25: {item['aqi']}")
-        self.average_pm25 = self.cumulative_pm25/len(self.stations)
+ 
+        self.average_pm25 = self.cumulative_pm25/self.samples_taken
         print("\n")
 
 """ Converts list of coordinates into string for use with AQICN api """

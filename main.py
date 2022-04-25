@@ -19,4 +19,12 @@ class AQICN_Parser:
     """ returns a JSON object containing station information for all
     stations with the coordinate string defined by crdnt_str """
     def get_stations(self, crdnt_str):
-        pass
+        parameters = {'latlng': crdnt_str, 'token': self.token}
+        url = self.api_url + '/v2/map/bounds'
+        r = self.query_api(url, parameters)
+        if r.status_code == 200:
+            data = r.json()['data']
+            return data
+
+    def close_session(self):
+        self.session.close()

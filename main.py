@@ -45,7 +45,6 @@ class Scheduler:
 
 class StationMap:
     def __init__(self, crdnt_str):
-        self.stations = {}
         self.cumulative_pm25 = 0
         self.average_pm25 = 0
         self.crdnts = crdnt_str
@@ -55,7 +54,6 @@ class StationMap:
         data = parser.get_stations(self.crdnts)
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         for item in data:
-            self.stations[item['uid']] = item['aqi']
             if item['aqi'].isnumeric():
                 self.cumulative_pm25 += int(item['aqi'])
                 self.samples_taken += 1

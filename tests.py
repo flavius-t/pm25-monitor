@@ -2,8 +2,6 @@ import unittest
 
 from main import TOKEN, AQICN_Parser
 
-
-
 class TestAQICN_Parser(unittest.TestCase):
     def setUp(self):
         self.parser = AQICN_Parser(TOKEN)

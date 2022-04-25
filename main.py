@@ -42,3 +42,19 @@ class Scheduler:
         while datetime.datetime.now() < end_time:
             schedule.run_pending()
             time.sleep(1)
+
+class StationMap:
+    def __init__(self, crdnt_str):
+        self.stations = {}
+        self.cumulative_pm25 = 0
+        self.average_pm25 = 0
+        self.crdnts = crdnt_str
+
+    def update_stations(self, parser):
+        data = parser.get_stations(self.crdnts)
+        for item in data:
+            self.stations[item['uid']] = item['aqi']
+            if item['aqi'].isnumeric():
+                self.cumulative_pm25 += int(item['aqi'])
+        self.average_pm25 = self.cumulative_pm25/len(self.stations)
+            

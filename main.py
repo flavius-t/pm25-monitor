@@ -14,7 +14,7 @@ class AQICN_Parser:
 
     """ run query with parameters at API endpoint url, returns ok 200 if API query ok"""
     def query_api(self, url, parameters):
-        pass
+        return self.session.get(url, params=parameters)
     
     """ returns a JSON object containing station information for all
     stations with the coordinate string defined by crdnt_str """

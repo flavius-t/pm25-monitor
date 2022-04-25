@@ -71,11 +71,11 @@ def get_coordinate_str(crdnt_list):
             
 def main():
     if (len(sys.argv) != 7):
-        print("Require exactly 7 arguments: file_name, lat1, lng1, lat2, lng2, rate, duration")
-        return
+        raise ValueError("Require exactly 7 arguments: file_name, lat1, lng1, lat2, lng2, rate, duration")
+    elif (int(sys.argv[5]) <= 0 or int(sys.argv[6]) <= 0):
+        raise ValueError("Sampling Rate and Duration must both be > 0")
     
     latlng = get_coordinate_str(sys.argv[1:5])
-    print(latlng)
     stns = StationMap(latlng)
     sched = Scheduler(6, 1)
     parser = AQICN_Parser(TOKEN)

@@ -1,5 +1,6 @@
-import json
+import json, schedule, datetime, time
 from requests import Session
+from datetime import timedelta
 
 f = open('keys.json')
 keys = json.load(f)
@@ -28,3 +29,16 @@ class AQICN_Parser:
 
     def close_session(self):
         self.session.close()
+
+class Scheduler:
+    def __init__(self, sample_rate, duration):
+        self.time_delta = 1/sample_rate
+        self.duration = duration
+
+    def start(self, job):
+        schedule.every(self.time_delta).minutes.do(job)
+        start_time = datetime.datetime.now()
+        end_time = start_time + timedelta(minutes=self.duration)
+        while datetime.datetime.now() < end_time:
+            schedule.run_pending()
+            time.sleep(1)

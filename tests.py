@@ -39,6 +39,9 @@ class TestStationMap(unittest.TestCase):
         stns.update_stations(self.parser)
         self.assertGreater(stns.cumulative_pm25, 0)
         self.assertGreater(stns.average_pm25, 0)
+        self.assertEqual(type(stns.cumulative_pm25), int)
+        self.assertEqual(type(stns.average_pm25), float)
+
 
 if __name__ == '__main__':
     unittest.main()

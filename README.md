@@ -7,4 +7,4 @@ Setup:
 
 Running:
 
-Program take 7 arguments: file_name, lat1, lng1, lat2, lng2, sample_rate, duration
+Program takes 7 arguments: file_name, lat1, lng1, lat2, lng2, sample_rate, duration

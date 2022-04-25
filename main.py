@@ -1,4 +1,4 @@
-import json, schedule, datetime, time
+import json, schedule, datetime, time, sys
 from requests import Session
 from datetime import timedelta
 
@@ -35,8 +35,8 @@ class Scheduler:
         self.time_delta = 1/sample_rate
         self.duration = duration
 
-    def start(self, job):
-        schedule.every(self.time_delta).minutes.do(job)
+    def start(self, job, api_parser):
+        schedule.every(self.time_delta).minutes.do(job, api_parser)
         start_time = datetime.datetime.now()
         end_time = start_time + timedelta(minutes=self.duration)
         while datetime.datetime.now() < end_time:
@@ -57,4 +57,17 @@ class StationMap:
             if item['aqi'].isnumeric():
                 self.cumulative_pm25 += int(item['aqi'])
         self.average_pm25 = self.cumulative_pm25/len(self.stations)
+        print(self.stations)
             
+def main():
+    if (len(sys.argv) != 7):
+        print("Require exactly 7 arguments: file_name, lat1, lng1, lat2, lng2, rate, duration")
+    latlng = '39.379436,116.091230,40.235643,116.784382'
+    stns = StationMap(latlng)
+    sched = Scheduler(6, 1)
+    parser = AQICN_Parser(TOKEN)
+    sched.start(stns.update_stations, parser)
+    parser.close_session()
+
+if __name__ == '__main__':
+    main()

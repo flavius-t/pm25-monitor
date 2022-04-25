@@ -87,7 +87,7 @@ def main():
     sched = Scheduler(6, 1)
     parser = AQICN_Parser(TOKEN)
     sched.start(stns.update_stations, parser)
-    print(f"Average Measured pm25: {stns.average_pm25}")
+    print(f"Average Measured pm25: {round(stns.average_pm25, 2)}")
     parser.close_session()
 
 if __name__ == '__main__':

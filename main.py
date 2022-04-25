@@ -58,11 +58,26 @@ class StationMap:
                 self.cumulative_pm25 += int(item['aqi'])
         self.average_pm25 = self.cumulative_pm25/len(self.stations)
         print(self.stations)
+
+""" Converts list of coordinates into string for use with AQICN api """
+def get_coordinate_str(crdnt_list):
+    crdnt_str = ''
+    num_crdtns = 4
+    for i in range(1, num_crdtns+1):
+        crdnt_str += sys.argv[i]
+        if i < num_crdtns:
+            crdnt_str += ","
+    return crdnt_str
             
 def main():
     if (len(sys.argv) != 7):
-        print("Require exactly 7 arguments: file_name, lat1, lng1, lat2, lng2, rate, duration")
-    latlng = '39.379436,116.091230,40.235643,116.784382'
+        raise ValueError("Require exactly 7 arguments: file_name, lat1, lng1, lat2, lng2, rate, duration")
+    elif (int(sys.argv[5]) <= 0 or int(sys.argv[6]) <= 0):
+        raise ValueError("Sampling Rate and Duration must both be > 0")
+    elif(sys.argv[1] == sys.argv[3] or sys.argv[2] == sys.argv[4]):
+        raise ValueError("lat1 must not equal lat2, lng1 must not equal lng2")
+    
+    latlng = get_coordinate_str(sys.argv[1:5])
     stns = StationMap(latlng)
     sched = Scheduler(6, 1)
     parser = AQICN_Parser(TOKEN)

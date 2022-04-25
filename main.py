@@ -74,6 +74,8 @@ def main():
         raise ValueError("Require exactly 7 arguments: file_name, lat1, lng1, lat2, lng2, rate, duration")
     elif (int(sys.argv[5]) <= 0 or int(sys.argv[6]) <= 0):
         raise ValueError("Sampling Rate and Duration must both be > 0")
+    elif(sys.argv[1] == sys.argv[3] or sys.argv[2] == sys.argv[4]):
+        raise ValueError("lat1 must not equal lat2, lng1 must not equal lng2")
     
     latlng = get_coordinate_str(sys.argv[1:5])
     stns = StationMap(latlng)

@@ -24,6 +24,8 @@ class AQICN_Parser:
         url = self.api_url + '/v2/map/bounds'
         r = self.query_api(url, parameters)
         if r.status_code == 200:
+            if r.json()['status'] != 'ok':
+                raise ValueError("Invalid API query: check coordinates or token are correct")
             data = r.json()['data']
             return data
 
@@ -81,8 +83,11 @@ def main():
         raise ValueError("lat1 must not equal lat2, lng1 must not equal lng2")
     
     latlng = get_coordinate_str(sys.argv[1:5])
+    print(latlng)
     stns = StationMap(latlng)
-    sched = Scheduler(6, 1)
+    sample_rate = int(sys.argv[5])
+    duration = float(sys.argv[6])
+    sched = Scheduler(sample_rate, duration)
     parser = AQICN_Parser(TOKEN)
     sched.start(stns.update_stations, parser)
     print(f"Average Measured pm25: {round(stns.average_pm25, 2)}")
